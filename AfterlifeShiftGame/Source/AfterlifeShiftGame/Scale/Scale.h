@@ -7,19 +7,47 @@
 #include "Scale.generated.h"
 
 UCLASS()
-class AScale : public AActor
+class UScale : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this actor's properties
-	AScale();
+	//Set the default values for this component's properties
+	UScale();
 
 protected:
-	// Called when the game starts or when spawned
+	//Called when the game starts
 	virtual void BeginPlay() override;
 
 public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	//Called every frame
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+/*
+ *I doubt ill do it but im adding blueprint functionality in case we want to use it later
+ */
+	
+	UFUNCTION(BlueprintCallable)
+	void AddWeightLeft(float Weight);
+
+	UFUNCTION(BlueprintCallable)
+	void AddWeightRight(float Weight);
+
+	UFUNCTION(BlueprintCallable)
+	void OnLeftInput();
+
+	UFUNCTION(BlueprintCallable)
+	void OnRightInput();
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	float LeftWeight;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	float RightWeight;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	USceneComponent* ScaleMesh;
+
+	UPROPERTY(EditAnywhere)
+	float RotationMultiplier;
 };

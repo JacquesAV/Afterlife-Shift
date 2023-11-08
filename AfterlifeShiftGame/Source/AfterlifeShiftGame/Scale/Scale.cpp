@@ -5,22 +5,51 @@
 
 
 // Sets default values
-AScale::AScale()
+UScale::UScale()
 {
-	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	//Set default values for this component's properties
+	LeftWeight = 0.0f;
+	RightWeight = 0.0f;
+	ScaleMesh = nullptr;
+	RotationMultiplier = 10.0f;
 }
 
-// Called when the game starts or when spawned
-void AScale::BeginPlay()
+void UScale::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	ScaleMesh = GetOwner()->GetRootComponent();
 }
 
-// Called every frame
-void AScale::Tick(float DeltaTime)
+void UScale::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
-	Super::Tick(DeltaTime);
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	
+	float TotalWeight = LeftWeight + RightWeight;
+
+	// Calculate the rotation angle based on the total weight
+	float RotationAngle = TotalWeight * RotationMultiplier;
+
+	// Apply the rotation to the ScaleMesh component
+	ScaleMesh->SetRelativeRotation(FRotator(0.0f, RotationAngle, 0.0f));
 }
 
+void UScale :: AddWeightLeft(float Weight)
+{
+	LeftWeight += Weight;
+}
+
+void UScale :: AddWeightRight(float Weight)
+{
+	RightWeight += Weight;
+}
+
+void UScale :: OnLeftInput()
+{
+	AddWeightLeft(1.0f);
+}
+
+void UScale :: OnRightInput()
+{
+	AddWeightRight(1.0f);
+}
