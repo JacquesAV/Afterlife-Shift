@@ -3,17 +3,18 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Components/BoxComponent.h"
 #include "GameFramework/Actor.h"
 #include "Scale.generated.h"
 
 UCLASS()
-class UScale : public UActorComponent
+class AFTERLIFESHIFTGAME_API AScale : public AActor
 {
 	GENERATED_BODY()
 
 public:
 	//Set the default values for this component's properties
-	UScale();
+	AScale();
 
 protected:
 	//Called when the game starts
@@ -21,7 +22,7 @@ protected:
 
 public:
 	//Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	virtual void Tick(float DeltaTime) override;
 
 /*
  *I doubt ill do it but im adding blueprint functionality in case we want to use it later
@@ -45,8 +46,11 @@ public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	float RightWeight;
 
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	USceneComponent* ScaleMesh;
+	UPROPERTY(VisibleAnywhere)
+	UBoxComponent* BoxComp;
+	
+	UPROPERTY(VisibleAnywhere)
+	UStaticMeshComponent* ScaleMesh;
 
 	UPROPERTY(EditAnywhere)
 	float RotationMultiplier;
