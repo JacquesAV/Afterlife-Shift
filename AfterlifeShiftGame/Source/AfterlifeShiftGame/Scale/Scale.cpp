@@ -40,8 +40,6 @@ void AScale::Tick(float DeltaTime)
 	float RotationAngle = TotalWeight * RotationMultiplier;
 
 	AddWeightLeft(0.01f);
-	//log the rotation angle
-	UE_LOG(LogTemp, Warning, TEXT("Rotation Angle: %f"), RotationAngle);
 
 	// Apply the rotation to the ScaleMesh component
 	ScaleMesh->SetRelativeRotation(FRotator(0.0f, RotationAngle, 0.0f));
