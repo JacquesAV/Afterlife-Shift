@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Components/BoxComponent.h"
 #include "GameFramework/Actor.h"
+#include "InputCoreModule.h"
 #include "Scale.generated.h"
 
 UCLASS()
@@ -47,7 +48,7 @@ public:
 	float RightWeight;
 
 	UPROPERTY(VisibleAnywhere)
-	UBoxComponent* BoxComp;
+	UPrimitiveComponent* RootComp;
 	
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* ScaleMesh;

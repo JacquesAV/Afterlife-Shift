@@ -2,6 +2,8 @@
 
 
 #include "Scale.h"
+#include "InputCoreModule.h"
+#include "GameFramework/PlayerInput.h"
 
 
 // Sets default values
@@ -12,16 +14,13 @@ AScale::AScale()
 	LeftWeight = 0.0f;
 	RightWeight = 0.0f;
 
-	BoxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("BOX Comp"));
-	BoxComp->InitBoxExtent(FVector(150, 100, 100));
-	BoxComp->SetCollisionProfileName("Trigger");
-	RootComponent = BoxComp;
-	
+	RootComp = CreateDefaultSubobject<UPrimitiveComponent>(TEXT("RootComponent"));
+	RootComponent = RootComp;
+
 	ScaleMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ScaleMesh"));
-	ScaleMesh->SetRelativeLocation(FVector(0.0f, 50.0f, -100.0f));
 	ScaleMesh->SetWorldScale3D(FVector(1.0f));
 	ScaleMesh->SetupAttachment(RootComponent);
-	
+
 	RotationMultiplier = 10.0f;
 }
 
@@ -39,28 +38,31 @@ void AScale::Tick(float DeltaTime)
 	// Calculate the rotation angle based on the total weight
 	float RotationAngle = TotalWeight * RotationMultiplier;
 
-	AddWeightLeft(0.01f);
+	//lerp the rotation between current and target
+	FRotator TargetRotation = FRotator(0.0f, 0.0f, RotationAngle);
+	FRotator CurrentRotation = ScaleMesh->GetRelativeRotation();
+	FRotator NewRotation = FMath::Lerp(CurrentRotation, TargetRotation, DeltaTime);
 
 	// Apply the rotation to the ScaleMesh component
-	ScaleMesh->SetRelativeRotation(FRotator(0.0f, RotationAngle, 0.0f));
+	ScaleMesh->SetRelativeRotation(NewRotation);
 }
 
-void AScale :: AddWeightLeft(float Weight)
+void AScale::AddWeightLeft(float Weight)
 {
 	LeftWeight += Weight;
 }
 
-void AScale :: AddWeightRight(float Weight)
+void AScale::AddWeightRight(float Weight)
 {
 	RightWeight += Weight;
 }
 
-void AScale :: OnLeftInput()
+void AScale::OnLeftInput()
 {
-	AddWeightLeft(1.0f);
+	AddWeightLeft(5.0f);
 }
 
-void AScale :: OnRightInput()
+void AScale::OnRightInput()
 {
-	AddWeightRight(1.0f);
+	AddWeightRight(5.0f);
 }
