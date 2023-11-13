@@ -20,5 +20,7 @@ void ADefaultPlayerStart::BeginPlay()
 
 	// Spawn the player at the player start location.
 	GetWorld()->GetFirstPlayerController()->GetPawn()->SetActorLocation(GetActorLocation());
+	
+	GetWorld()->GetFirstPlayerController()->GetPawn()->SetActorRotation(GetActorRotation());
 }
 
