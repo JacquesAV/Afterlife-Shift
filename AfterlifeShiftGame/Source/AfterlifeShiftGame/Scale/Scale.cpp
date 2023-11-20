@@ -6,7 +6,7 @@
 #include "AfterlifeShiftGame/EventManager/EventManager.h"
 #include "GameFramework/PlayerInput.h"
 
-DECLARE_MULTICAST_DELEGATE_OneParam(FOnLeftInput, float);
+//DECLARE_MULTICAST_DELEGATE_OneParam(FOnLeftInput, float);
 
 // Sets default values
 AScale::AScale()
