@@ -32,14 +32,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void AddWeightLeft(float Weight);
 
-	UFUNCTION(BlueprintCallable)
-	void AddWeightRight(float Weight);
-
-	UFUNCTION(BlueprintCallable)
-	void OnLeftInput();
-
-	UFUNCTION(BlueprintCallable)
-	void OnRightInput();
+	/*UFUNCTION(BlueprintCallable)
+	void AddWeightRight(float Weight);*/
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	float LeftWeight;

@@ -3,8 +3,10 @@
 
 #include "Scale.h"
 #include "InputCoreModule.h"
+#include "AfterlifeShiftGame/EventManager/EventManager.h"
 #include "GameFramework/PlayerInput.h"
 
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnLeftInput, float);
 
 // Sets default values
 AScale::AScale()
@@ -27,6 +29,14 @@ AScale::AScale()
 void AScale::BeginPlay()
 {
 	Super::BeginPlay();
+
+	//bind the FOOnLeftInput delegate to the AddWeightLeft function
+	UEventManager* EventManager = UEventManager::GetInstance();
+	if (EventManager)
+	{
+		EventManager->OnAddWeightLeft.AddUObject(this, &AScale::AddWeightLeft);
+		//EventManager->OnAddWeightRight.AddDynamic(this, &AScale::AddWeightRight(5));
+	}
 }
 
 void AScale::Tick(float DeltaTime)
@@ -52,17 +62,7 @@ void AScale::AddWeightLeft(float Weight)
 	LeftWeight += Weight;
 }
 
-void AScale::AddWeightRight(float Weight)
+/*void AScale::AddWeightRight(float Weight)
 {
 	RightWeight += Weight;
-}
-
-void AScale::OnLeftInput()
-{
-	AddWeightLeft(5.0f);
-}
-
-void AScale::OnRightInput()
-{
-	AddWeightRight(5.0f);
-}
+}*/

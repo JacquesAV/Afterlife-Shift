@@ -7,7 +7,9 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "EventManager/EventManager.h"
 
+DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
 // Sets default values
 AFirstPersonCharacter::AFirstPersonCharacter()
@@ -27,8 +29,7 @@ AFirstPersonCharacter::AFirstPersonCharacter()
 void AFirstPersonCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
-
+	
 	// Add Input Mapping Context
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 	{
@@ -44,13 +45,34 @@ void AFirstPersonCharacter::BeginPlay()
 void AFirstPersonCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
 
+void AFirstPersonCharacter::AddWeightLeftPressed()
+{
+	UEventManager* EventManager = UEventManager::GetInstance();
+	if (EventManager)
+	{
+		EventManager->OnAddWeightLeft.Broadcast(5);
+	}
 }
 
 // Called to bind functionality to input
 void AFirstPersonCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
+	// Set up action bindings
+	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
+	{
+		//Interact
+		EnhancedInputComponent->BindAction(AddWeightLeftAction, ETriggerEvent::Triggered, this,
+										   &AFirstPersonCharacter::AddWeightLeftPressed);
+	}
+	else
+	{
+		UE_LOG(LogTemplateCharacter, Error,
+			   TEXT(
+				   "'%s' Failed to find an Enhanced Input Component! This template is built to use the Enhanced Input system. If you intend to use the legacy system, then you will need to update this C++ file."
+			   ), *GetNameSafe(this));
+	}
 }
 

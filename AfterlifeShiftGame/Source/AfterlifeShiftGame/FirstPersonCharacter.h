@@ -4,8 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Logging/LogMacros.h"
 #include "FirstPersonCharacter.generated.h"
-
 
 class USkeletalMeshComponent;
 class UCameraComponent;
@@ -13,6 +13,8 @@ class UInputAction;
 class UInputMappingContext;
 struct FInputActionValue;
 class UInputComponent;
+
+DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
 UCLASS(Config=Game)
 class AFTERLIFESHIFTGAME_API AFirstPersonCharacter : public ACharacter
@@ -29,11 +31,14 @@ class AFTERLIFESHIFTGAME_API AFirstPersonCharacter : public ACharacter
 	
 	/** Interact Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
-	UInputAction* AddWeightLeft;
+	UInputAction* AddWeightLeftAction;
 
 public:
 	// Sets default values for this character's properties
 	AFirstPersonCharacter();
+
+	/** Returns FirstPersonCameraComponent subobject **/
+	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
 protected:
 	// Called when the game starts or when spawned
@@ -41,7 +46,9 @@ protected:
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-public:	
+
+	void AddWeightLeftPressed();
+	
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
