@@ -49,11 +49,11 @@ void AFirstPersonCharacter::Tick(float DeltaTime)
 
 void AFirstPersonCharacter::AddWeightLeftPressed()
 {
-	UEventManager* EventManager = UEventManager::GetInstance();
+	/*UEventManager* EventManager = UEventManager::GetInstance();
 	if (EventManager)
 	{
 		EventManager->OnAddWeightLeft.Broadcast(5);
-	}
+	}*/
 }
 
 // Called to bind functionality to input

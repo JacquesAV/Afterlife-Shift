@@ -4,12 +4,14 @@ UEventManager* UEventManager::Instance = nullptr;
 
 UEventManager* UEventManager::GetInstance()
 {
-	if (Instance == nullptr)
+	/*if (Instance == nullptr)
 	{
 		Instance = NewObject<UEventManager>(nullptr);
 	}
 
-	return Instance;
+	return Instance;*/
+
+	return nullptr;
 }
 
 UEventManager::UEventManager()

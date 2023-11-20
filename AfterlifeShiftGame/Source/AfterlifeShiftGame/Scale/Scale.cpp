@@ -30,13 +30,13 @@ void AScale::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//bind the FOOnLeftInput delegate to the AddWeightLeft function
+	/*//bind the FOOnLeftInput delegate to the AddWeightLeft function
 	UEventManager* EventManager = UEventManager::GetInstance();
 	if (EventManager)
 	{
 		EventManager->OnAddWeightLeft.AddUObject(this, &AScale::AddWeightLeft);
 		//EventManager->OnAddWeightRight.AddDynamic(this, &AScale::AddWeightRight(5));
-	}
+	}*/
 }
 
 void AScale::Tick(float DeltaTime)
