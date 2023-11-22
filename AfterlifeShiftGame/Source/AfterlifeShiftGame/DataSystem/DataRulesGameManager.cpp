@@ -1,6 +1,6 @@
 // Copyright (c) 2023, Stinky Cheese, All rights reserved.
 
-#include "DeathTestStruct.h"
+#include "DataStructures/DeathTestStruct.h"
 #include "DataRulesGameManager.h"
 #include "Engine/DataTable.h"
 
