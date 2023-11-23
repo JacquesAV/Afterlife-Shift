@@ -41,21 +41,8 @@ void AWeight::Tick(float DeltaTime)
 
 	if (holding)
 	{
-		//raycast from the mouse cursor to the ground
-		FHitResult HitResult;
-		FVector StartLocation = PlayerCamera->GetComponentLocation();
-		FVector EndLocation = StartLocation + PlayerCamera->GetForwardVector() * 1000.f;
-		FCollisionQueryParams TraceParams;
-		TraceParams.AddIgnoredActor(this);
-		TraceParams.AddIgnoredActor(PlayerCharacter);
-
-		if (GetWorld()->LineTraceSingleByChannel(HitResult, StartLocation, EndLocation, ECC_Visibility, TraceParams))
-		{
-			//move the weight to the hit location
-			FVector NewLocation = HitResult.Location;
-			NewLocation.Z += HeightWeightOffset;
-			SetActorLocation(NewLocation);
-		}
+		//move to location to move to
+		this->SetActorLocation(FMath::VInterpTo(this->GetActorLocation(), LocationToMoveTo, DeltaTime, 10.f));
 	}
 }
 
@@ -64,4 +51,10 @@ void AWeight::Pickup()
 	holding = !holding;
 
 	WeightMesh->SetCollisionEnabled(holding ? ECollisionEnabled::NoCollision : ECollisionEnabled::QueryAndPhysics);
+}
+
+void AWeight::SetNewTargetLocation(const FVector& NewLocation)
+{
+	LocationToMoveTo.Z += this->GetActorLocation().Z;
+	LocationToMoveTo = NewLocation;
 }

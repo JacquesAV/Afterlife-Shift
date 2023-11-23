@@ -86,22 +86,31 @@ void ATP_TopDownPlayerController::OnSetDestinationTriggered()
 	FVector WorldDirection;
 	DeprojectMousePositionToWorld(WorldLocation, WorldDirection);
 
-	//log the world location
-	UE_LOG(LogTemp, Warning, TEXT("World Location: %s"), *WorldLocation.ToString());
-
 	//raycast from the mouse cursor to see if we hit anything
 	FHitResult HitResult;
 	FVector StartPoint = WorldLocation;
 	FVector EndPoint = WorldLocation + WorldDirection * 10000.f;
 	GetWorld()->LineTraceSingleByChannel(HitResult, StartPoint, EndPoint, ECC_WorldStatic);
-	
-	//log start and end point
-	UE_LOG(LogTemp, Warning, TEXT("Start Point: %s"), *StartPoint.ToString());
-	UE_LOG(LogTemp, Warning, TEXT("End Point: %s"), *EndPoint.ToString());
+
 	if (HitResult.bBlockingHit)
 	{
-		//log the name of the actor we hit
-		UE_LOG(LogTemp, Warning, TEXT("Hit: %s"), *HitResult.GetActor()->GetName());
+		//check if the actor we hit is a weight
+		if (AWeight* Weight = Cast<AWeight>(HitResult.GetActor()))
+		{
+			//if the weight is the same as the current weight skip
+			if (!CurrentWeight)
+			{
+				//pickup the weight
+				Weight->Pickup();
+				//set the current weight
+				CurrentWeight = Weight;
+			}
+		}
+	}
+
+	if(CurrentWeight)
+	{
+		CurrentWeight->SetNewTargetLocation(HitResult.Location);
 	}
 }
 
@@ -110,10 +119,14 @@ void ATP_TopDownPlayerController::OnSetDestinationReleased()
 	// If it was a short press
 	if (FollowTime <= ShortPressThreshold)
 	{
-		/*// We move there and spawn some particles
-		UAIBlueprintHelperLibrary::SimpleMoveToLocation(this, CachedDestination);
-		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, FXCursor, CachedDestination, FRotator::ZeroRotator,
-		                                               FVector(1.f, 1.f, 1.f), true, true, ENCPoolMethod::None, true);*/
+		//if we are holding a weight
+		if (CurrentWeight)
+		{
+			//drop the weight
+			CurrentWeight->Pickup();
+			//set the current weight to null
+			CurrentWeight = nullptr;
+		}
 	}
 
 	FollowTime = 0.f;

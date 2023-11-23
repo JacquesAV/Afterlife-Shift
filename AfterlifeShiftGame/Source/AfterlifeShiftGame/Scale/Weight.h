@@ -27,6 +27,9 @@ public:
 	UFUNCTION()
 	void Pickup();
 
+	UFUNCTION()
+	void SetNewTargetLocation(const FVector& NewLocation);
+
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* WeightMesh;
 
@@ -36,4 +39,6 @@ public:
 	bool holding;
 	ACharacter* PlayerCharacter;
 	UCameraComponent* PlayerCamera;
+
+	FVector LocationToMoveTo;
 };

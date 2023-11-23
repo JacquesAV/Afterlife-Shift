@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AfterlifeShiftGame/Scale/Weight.h"
 #include "Templates/SubclassOf.h"
 #include "GameFramework/PlayerController.h"
 #include "TP_TopDownPlayerController.generated.h"
@@ -63,6 +64,7 @@ private:
 
 	bool bIsTouch; // Is it a touch device
 	float FollowTime; // For how long it has been pressed
+	AWeight* CurrentWeight;
 };
 
 
