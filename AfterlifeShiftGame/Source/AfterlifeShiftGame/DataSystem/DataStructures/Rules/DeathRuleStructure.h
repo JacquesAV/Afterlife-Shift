@@ -5,16 +5,19 @@
 #include "CoreMinimal.h"
 #include "Engine/DataTable.h"
 #include "AfterlifeShiftGame/DataSystem/EnumIdentifiers/DeathIdentifier.h"
-#include "DeathTestStruct.generated.h"
+#include "DeathRuleStructure.generated.h"
 
 USTRUCT(BlueprintType)
-struct FDeathTestStruct : public FTableRowBase
+struct FDeathRuleStructure : public FTableRowBase
 {
 	GENERATED_BODY()
  	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FString Name;
- 	
+	FString DisplayText;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) 
 	EDeathIdentifier Identifier;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool IsPositiveRule;
 };

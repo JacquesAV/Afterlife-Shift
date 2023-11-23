@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CharacterDataHolder.h"
 #include "RulesetHolder.h"
 #include "GameFramework/Actor.h"
 #include "DataRulesGameManager.generated.h"
@@ -21,7 +22,7 @@ protected:
 	virtual void BeginPlay() override;
 	
 	// Debugs the current rule data tables.
-	UFUNCTION(CallInEditor, Category = "Debugging")
+	UFUNCTION(CallInEditor, Category = "Debugging Character Data")
 	void DebugDeathDataTable() const;
 	
 public:	
@@ -32,7 +33,10 @@ public:
 	UPROPERTY()
 	USceneComponent* Root;
 	
-	// Array of references to the DataTables for the game.
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data Rules")
-	URulesetHolder* RuleDataTables;
+	// Asset holders for game related data tables.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data Set Holders")
+	URulesetHolder* RulesetTables;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data Set Holders")
+	UCharacterDataHolder* CharacterDataTables;
 };
