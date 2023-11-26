@@ -62,12 +62,12 @@ void AScale::AddWeightRight(float Weight)
 void AScale::CheckForWeights()
 {
 	//Check how many weights are on the leftweighttrigger
-	LeftWeight=0;
+	LeftWeight = 0;
 	TArray<AActor*> LeftWeightActors;
 	LeftWeightTrigger->GetOverlappingActors(LeftWeightActors);
 	//check if there are any weights on the leftweighttrigger and add their weight together
 	for (auto LeftWeightActor : LeftWeightActors)
-	{		
+	{
 		AWeight* Weight = Cast<AWeight>(LeftWeightActor);
 		if (Weight)
 		{
@@ -88,17 +88,21 @@ void AScale::CheckForWeights()
 			RightWeight += Weight->Weight;
 		}
 	}
-	
-	float WeightDifference = LeftWeight - RightWeight;
+
+	float WeightDifference = RightWeight - LeftWeight;
 
 	// Calculate the rotation angle based on the total weight
 	float RotationAngle = WeightDifference * RotationMultiplier;
 
 	//get the current rotation
 	FRotator CurrentRotation = ScaleMesh->GetRelativeRotation();
-	
+
 	// Create a new rotation from the rotation angle
 	FRotator NewRotation = FRotator(CurrentRotation.Pitch, CurrentRotation.Yaw, RotationAngle);
+
+	//lerp the rotation
+	NewRotation = FMath::Lerp(CurrentRotation, NewRotation, 0.1f);
+
 	// Apply the rotation to the ScaleMesh component
 	ScaleMesh->SetRelativeRotation(NewRotation);
 }
