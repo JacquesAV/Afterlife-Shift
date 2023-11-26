@@ -47,6 +47,12 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* ScaleMesh;
 
+	UPROPERTY(VisibleAnywhere, Category="Weight Trigger")
+	UBoxComponent* LeftWeightTrigger;
+
+	UPROPERTY(VisibleAnywhere, Category="Weight Trigger")
+	UBoxComponent* RightWeightTrigger;
+
 	UPROPERTY(EditAnywhere)
 	float RotationMultiplier;
 };

@@ -23,6 +23,16 @@ AScale::AScale()
 	ScaleMesh->SetWorldScale3D(FVector(1.0f));
 	ScaleMesh->SetupAttachment(RootComponent);
 
+	LeftWeightTrigger = CreateDefaultSubobject<UBoxComponent>(TEXT("LeftWeightTrigger"));
+	LeftWeightTrigger->SetupAttachment(ScaleMesh);
+	LeftWeightTrigger->SetRelativeLocation(FVector(-50.0f, 0.0f, 0.0f));
+	LeftWeightTrigger->SetBoxExtent(FVector(50.0f, 50.0f, 50.0f));
+
+	RightWeightTrigger = CreateDefaultSubobject<UBoxComponent>(TEXT("RightWeightTrigger"));
+	RightWeightTrigger->SetupAttachment(ScaleMesh);
+	RightWeightTrigger->SetRelativeLocation(FVector(50.0f, 0.0f, 0.0f));
+	RightWeightTrigger->SetBoxExtent(FVector(50.0f, 50.0f, 50.0f));
+
 	RotationMultiplier = 10.0f;
 }
 
