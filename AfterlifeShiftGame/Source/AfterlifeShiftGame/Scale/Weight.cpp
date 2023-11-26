@@ -18,7 +18,17 @@ AWeight::AWeight()
 	WeightMesh = CreateDefaultSubobject<UStaticMeshComponent>("WeightMesh");
 	WeightMesh->SetupAttachment(RootComponent);
 
+	WeightTrigger = CreateDefaultSubobject<USphereComponent>("WeightTrigger");
+	WeightTrigger->SetupAttachment(WeightMesh);
+	WeightTrigger->SetRelativeLocation(FVector(0.f, 0.f, 0.f));
+	WeightTrigger->SetSphereRadius(100.f);
+	WeightTrigger->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+
+	//enable overlap events
+	WeightMesh->SetGenerateOverlapEvents(true);
+
 	holding = false;
+	Weight = 1.f;
 }
 
 // Called when the game starts or when spawned

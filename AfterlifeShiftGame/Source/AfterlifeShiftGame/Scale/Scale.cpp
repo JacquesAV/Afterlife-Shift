@@ -3,6 +3,7 @@
 
 #include "Scale.h"
 #include "InputCoreModule.h"
+#include "Weight.h"
 #include "AfterlifeShiftGame/EventManager/EventManager.h"
 #include "GameFramework/PlayerInput.h"
 
@@ -25,12 +26,12 @@ AScale::AScale()
 
 	LeftWeightTrigger = CreateDefaultSubobject<UBoxComponent>(TEXT("LeftWeightTrigger"));
 	LeftWeightTrigger->SetupAttachment(ScaleMesh);
-	LeftWeightTrigger->SetRelativeLocation(FVector(-50.0f, 0.0f, 0.0f));
+	LeftWeightTrigger->SetRelativeLocation(FVector(0.0f, -55.0f, 0.0f));
 	LeftWeightTrigger->SetBoxExtent(FVector(50.0f, 50.0f, 50.0f));
 
 	RightWeightTrigger = CreateDefaultSubobject<UBoxComponent>(TEXT("RightWeightTrigger"));
 	RightWeightTrigger->SetupAttachment(ScaleMesh);
-	RightWeightTrigger->SetRelativeLocation(FVector(50.0f, 0.0f, 0.0f));
+	RightWeightTrigger->SetRelativeLocation(FVector(0.0f, 55.0f, 0.0f));
 	RightWeightTrigger->SetBoxExtent(FVector(50.0f, 50.0f, 50.0f));
 
 	RotationMultiplier = 10.0f;
@@ -39,32 +40,13 @@ AScale::AScale()
 void AScale::BeginPlay()
 {
 	Super::BeginPlay();
-
-	/*//bind the FOOnLeftInput delegate to the AddWeightLeft function
-	UEventManager* EventManager = UEventManager::GetInstance();
-	if (EventManager)
-	{
-		EventManager->OnAddWeightLeft.AddUObject(this, &AScale::AddWeightLeft);
-		//EventManager->OnAddWeightRight.AddDynamic(this, &AScale::AddWeightRight(5));
-	}*/
 }
 
 void AScale::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	float TotalWeight = LeftWeight + RightWeight;
-
-	// Calculate the rotation angle based on the total weight
-	float RotationAngle = TotalWeight * RotationMultiplier;
-
-	//lerp the rotation between current and target
-	FRotator TargetRotation = FRotator(0.0f, 0.0f, RotationAngle);
-	FRotator CurrentRotation = ScaleMesh->GetRelativeRotation();
-	FRotator NewRotation = FMath::Lerp(CurrentRotation, TargetRotation, DeltaTime);
-
-	// Apply the rotation to the ScaleMesh component
-	ScaleMesh->SetRelativeRotation(NewRotation);
+	CheckForWeights();
 }
 
 void AScale::AddWeightLeft(float Weight)
@@ -72,7 +54,51 @@ void AScale::AddWeightLeft(float Weight)
 	LeftWeight += Weight;
 }
 
-/*void AScale::AddWeightRight(float Weight)
+void AScale::AddWeightRight(float Weight)
 {
 	RightWeight += Weight;
-}*/
+}
+
+void AScale::CheckForWeights()
+{
+	//Check how many weights are on the leftweighttrigger
+	LeftWeight=0;
+	TArray<AActor*> LeftWeightActors;
+	LeftWeightTrigger->GetOverlappingActors(LeftWeightActors);
+	//check if there are any weights on the leftweighttrigger and add their weight together
+	for (auto LeftWeightActor : LeftWeightActors)
+	{		
+		AWeight* Weight = Cast<AWeight>(LeftWeightActor);
+		if (Weight)
+		{
+			LeftWeight += Weight->Weight;
+		}
+	}
+
+	//Check how many weights are on the rightweighttrigger
+	RightWeight = 0;
+	TArray<AActor*> RightWeightActors;
+	RightWeightTrigger->GetOverlappingActors(RightWeightActors);
+	//check if there are any weights on the rightweighttrigger and add their weight together
+	for (auto RightWeightActor : RightWeightActors)
+	{
+		AWeight* Weight = Cast<AWeight>(RightWeightActor);
+		if (Weight)
+		{
+			RightWeight += Weight->Weight;
+		}
+	}
+	
+	float WeightDifference = LeftWeight - RightWeight;
+
+	// Calculate the rotation angle based on the total weight
+	float RotationAngle = WeightDifference * RotationMultiplier;
+
+	//get the current rotation
+	FRotator CurrentRotation = ScaleMesh->GetRelativeRotation();
+	
+	// Create a new rotation from the rotation angle
+	FRotator NewRotation = FRotator(CurrentRotation.Pitch, CurrentRotation.Yaw, RotationAngle);
+	// Apply the rotation to the ScaleMesh component
+	ScaleMesh->SetRelativeRotation(NewRotation);
+}

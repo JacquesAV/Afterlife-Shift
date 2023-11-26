@@ -27,14 +27,16 @@ public:
 
 /*
  *I doubt ill do it but im adding blueprint functionality in case we want to use it later
- */
-	
+ */	
 	UFUNCTION(BlueprintCallable)
 	void AddWeightLeft(float Weight);
 
-	/*UFUNCTION(BlueprintCallable)
-	void AddWeightRight(float Weight);*/
+	UFUNCTION(BlueprintCallable)
+	void AddWeightRight(float Weight);
 
+UFUNCTION()
+	void CheckForWeights();
+	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	float LeftWeight;
 

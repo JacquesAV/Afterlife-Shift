@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Camera/CameraComponent.h"
+#include "Components/SphereComponent.h"
 #include "GameFramework/Actor.h"
 #include "Weight.generated.h"
 
@@ -34,7 +35,13 @@ public:
 	UStaticMeshComponent* WeightMesh;
 
 	UPROPERTY(EditAnywhere)
+	USphereComponent* WeightTrigger;
+
+	UPROPERTY(EditAnywhere)
 	float HeightWeightOffset;
+
+	UPROPERTY(EditAnywhere)
+	float Weight;
 	
 	bool holding;
 	ACharacter* PlayerCharacter;
