@@ -3,6 +3,9 @@
 #include "DataStructures/CharacterData/DeathStructure.h"
 #include "DataStructures/CharacterData/ProfessionStructure.h"
 #include "DataStructures/CharacterData/DeedStructure.h"
+#include "DataStructures/Rules/DeathRuleStructure.h"
+#include "DataStructures/Rules/ProfessionRuleStructure.h"
+#include "DataStructures/Rules/DeedRuleStructure.h"
 #include "DataRulesGameManager.h"
 #include "Engine/DataTable.h"
 
@@ -264,6 +267,96 @@ void ADataRulesGameManager::DebugMajorGoodDeedDataTable() const
 }
 #pragma endregion Character Data Debugging
 #pragma region Ruleset Data Debugging
-// TODO: Implement ruleset data debugging.
+bool ADataRulesGameManager::IsRuleDataTablesValid() const
+{
+	//Make sure the data table holder is valid.
+	if (!RulesetTables)
+	{
+		UE_LOG(LogTemp, Error, TEXT("No rule data tables provided!"));
+		return false;
+	}
+	return true;
+}
+
+void ADataRulesGameManager::DebugDeathRuleDataTable() const
+{
+	UE_LOG(LogTemp, Display, TEXT("(1/2) Debugging the DeathRule data table..."));
+	
+	// Check for valid data before iterating.
+	if (!IsRuleDataTablesValid()) return;
+	if (!IsDataTableValid<FDeathRuleStructure>(RulesetTables->DeathRuleDataTable)) return;
+	
+	// Iterate over the death data table and print out the name and identifier of each row.
+	const TArray<FName> RowNames = RulesetTables->DeathRuleDataTable->GetRowNames();
+	for (int32 i = 0; i < RowNames.Num(); i++)
+	{
+		// Get the row name & row data.
+		const FName RowName = RowNames[i];
+		FDeathRuleStructure* RowData = RulesetTables->DeathRuleDataTable->FindRow<FDeathRuleStructure>(RowName, FString(""));
+		
+		// Make sure the row data is valid.
+		if (IsRowValid(RowName, RowData)) continue;
+		
+		// Print the row index, name and identifier.
+		UE_LOG(LogTemp, Display, TEXT("Row Index: %d, Name: %s, Identifier: %s (%d), Is Positive: %s"),
+			i, *RowData->DisplayText, *GetEnumValueDisplayName(RowData->Identifier), (uint8)RowData->Identifier, RowData->IsPositiveRule ? TEXT("True") : TEXT("False"));
+	}
+	
+	UE_LOG(LogTemp, Display, TEXT("(2/2) Finished Debugging the DeathRule data table!"));
+}
+
+void ADataRulesGameManager::DebugProfessionRuleDataTable() const
+{
+	UE_LOG(LogTemp, Display, TEXT("(1/2) Debugging the ProfessionRule data table..."));
+	
+	// Check for valid data before iterating.
+	if (!IsRuleDataTablesValid()) return;
+	if (!IsDataTableValid<FProfessionRuleStructure>(RulesetTables->ProfessionRuleDataTable)) return;
+	
+	// Iterate over the death data table and print out the name and identifier of each row.
+	const TArray<FName> RowNames = RulesetTables->ProfessionRuleDataTable->GetRowNames();
+	for (int32 i = 0; i < RowNames.Num(); i++)
+	{
+		// Get the row name & row data.
+		const FName RowName = RowNames[i];
+		FProfessionRuleStructure* RowData = RulesetTables->ProfessionRuleDataTable->FindRow<FProfessionRuleStructure>(RowName, FString(""));
+		
+		// Make sure the row data is valid.
+		if (IsRowValid(RowName, RowData)) continue;
+		
+		// Print the row index, name and identifier.
+		UE_LOG(LogTemp, Display, TEXT("Row Index: %d, Name: %s, Identifier: %s (%d), Is Positive: %s"),
+			i, *RowData->DisplayText, *GetEnumValueDisplayName(RowData->Identifier), (uint8)RowData->Identifier, RowData->IsPositiveRule ? TEXT("True") : TEXT("False"));
+	}
+	
+	UE_LOG(LogTemp, Display, TEXT("(2/2) Finished Debugging the ProfessionRule data table!"));
+}
+
+void ADataRulesGameManager::DebugDeedRuleDataTable() const
+{
+	UE_LOG(LogTemp, Display, TEXT("(1/2) Debugging the DeedRule data table..."));
+	
+	// Check for valid data before iterating.
+	if (!IsRuleDataTablesValid()) return;
+	if (!IsDataTableValid<FDeedRuleStructure>(RulesetTables->DeedRuleDataTable)) return;
+	
+	// Iterate over the data table and print out the name and identifier of each row.
+	const TArray<FName> RowNames = RulesetTables->DeedRuleDataTable->GetRowNames();
+	for (int32 i = 0; i < RowNames.Num(); i++)
+	{
+		// Get the row name & row data.
+		const FName RowName = RowNames[i];
+		const FDeedRuleStructure* RowData = RulesetTables->DeedRuleDataTable->FindRow<FDeedRuleStructure>(RowName, FString(""));
+		
+		// Make sure the row data is valid.
+		if (IsRowValid(RowName, RowData)) continue;
+		
+		// Print the row index, name and identifier.
+		UE_LOG(LogTemp, Display, TEXT("Row Index: %d, Name: %s, Identifier: %s (%d), Is Positive: %s"),
+			i, *RowData->DisplayText, *GetEnumValueDisplayName(RowData->Identifier), (uint8)RowData->Identifier, RowData->IsPositiveRule ? TEXT("True") : TEXT("False"));
+	}
+	
+	UE_LOG(LogTemp, Display, TEXT("(2/2) Finished Debugging the DeedRule data table!"));
+}
 #pragma endregion Ruleset Data Debugging
 #pragma endregion Debugging

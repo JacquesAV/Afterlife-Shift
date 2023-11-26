@@ -22,6 +22,7 @@ protected:
 	virtual void BeginPlay() override;
 	
 	bool IsCharacterDataTablesValid() const;
+	bool IsRuleDataTablesValid() const;
 	
 	template <class TExpectedStruct>
 	static bool IsRowValid(FName RowName, TExpectedStruct* RowData);
@@ -43,6 +44,15 @@ protected:
 	
 	UFUNCTION(CallInEditor, Category = "Debugging Character Data Deeds")
 	void DebugMajorGoodDeedDataTable() const;
+	
+	UFUNCTION(CallInEditor, Category = "Debugging Rule Data")
+	void DebugDeathRuleDataTable() const;
+	
+	UFUNCTION(CallInEditor, Category = "Debugging Rule Data")
+	void DebugProfessionRuleDataTable() const;
+	
+	UFUNCTION(CallInEditor, Category = "Debugging Rule Data")
+	void DebugDeedRuleDataTable() const;
 
 public:	
 	// Called every frame
