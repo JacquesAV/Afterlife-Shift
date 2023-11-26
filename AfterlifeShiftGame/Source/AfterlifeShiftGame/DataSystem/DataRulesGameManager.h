@@ -21,10 +21,29 @@ protected:
 	// Called when the game starts or when spawned.
 	virtual void BeginPlay() override;
 	
-	// Debugs the current rule data tables.
+	bool IsCharacterDataTablesValid() const;
+	
+	template <class TExpectedStruct>
+	static bool IsRowValid(FName RowName, TExpectedStruct* RowData);
+	
 	UFUNCTION(CallInEditor, Category = "Debugging Character Data")
 	void DebugDeathDataTable() const;
 	
+	UFUNCTION(CallInEditor, Category = "Debugging Character Data")
+	void DebugProfessionDataTable() const;
+	
+	UFUNCTION(CallInEditor, Category = "Debugging Character Data Deeds")
+	void DebugMinorGoodDeedDataTable() const;
+	
+	UFUNCTION(CallInEditor, Category = "Debugging Character Data Deeds")
+	void DebugMinorBadDeedDataTable() const;
+	
+	UFUNCTION(CallInEditor, Category = "Debugging Character Data Deeds")
+	void DebugMajorBadDeedDataTable() const;
+	
+	UFUNCTION(CallInEditor, Category = "Debugging Character Data Deeds")
+	void DebugMajorGoodDeedDataTable() const;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
